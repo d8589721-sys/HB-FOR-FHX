@@ -179,7 +179,10 @@
 
   @media (max-width: 720px){
     .stage{
-      padding-top:max(76px, calc(env(safe-area-inset-top) + 64px));
+      padding-top:max(72px, calc(env(safe-area-inset-top) + 60px));
+      padding-left:12px;
+      padding-right:12px;
+      padding-bottom:max(20px, env(safe-area-inset-bottom));
     }
   }
 
@@ -440,7 +443,7 @@
   .cta:hover .cta-icon{ transform:translateX(3px) rotate(-6deg); }
 
   /* =========================================================
-     音乐播放器（圆形按钮 · 点击播放/暂停 · 默认自动播放）
+     音乐播放器（圆形按钮）
      ========================================================= */
   .music-btn{
     position:fixed;
@@ -491,12 +494,10 @@
     animation:spin 4.5s linear infinite;
   }
 
-  /* 未播放时的轻微静音视觉提示 */
   .music-btn:not(.is-playing) .disc{
     opacity:.62;
   }
 
-  /* 呼吸光晕：播放中可见 */
   .music-btn::before{
     content:'';
     position:absolute;
@@ -536,7 +537,7 @@
     flex-direction:column;
     border-radius:24px;
     padding:
-      clamp(52px, 11vw, 66px)
+      clamp(56px, 11vw, 68px)
       clamp(22px, 5.4vw, 44px)
       clamp(18px, 4vw, 26px);
     max-height:min(760px, calc(100svh - 88px));
@@ -553,31 +554,32 @@
   /* 返回按钮 */
   .back-link{
     position:absolute;
-    top:clamp(14px, 3.4vw, 22px);
-    left:clamp(14px, 3.4vw, 22px);
+    top:clamp(12px, 3.2vw, 20px);
+    left:clamp(12px, 3.2vw, 20px);
     z-index:5;
     display:inline-flex;
     align-items:center;
     gap:6px;
-    padding:4px 2px;
+    padding:8px 12px 8px 6px;
     background:none;
     border:none;
     color:#0284c7;
     font-family:'Quicksand','Noto Serif SC',sans-serif;
-    font-size:clamp(11px, 2.8vw, 12px);
+    font-size:clamp(12.5px, 3.4vw, 13.5px);
     font-weight:600;
     letter-spacing:.04em;
     cursor:pointer;
     transition:color .25s ease, transform .25s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  .back-link i{ font-size:.85em; transition:transform .25s ease; }
+  .back-link i{ font-size:.9em; transition:transform .25s ease; }
   .back-link:hover{ color:#0c4a6e; }
   .back-link:hover i{ transform:translateX(-2px); }
+  .back-link:active{ transform:scale(.96); }
   .back-link:focus-visible{
     outline:2px solid #7dd3fc;
-    outline-offset:3px;
-    border-radius:4px;
+    outline-offset:2px;
+    border-radius:6px;
   }
 
   /* 信件头部 */
@@ -591,25 +593,25 @@
 
   .letter-quote{
     color:#7dd3fc;
-    font-size:clamp(20px, 5vw, 26px);
+    font-size:clamp(22px, 5.4vw, 28px);
     line-height:1;
     margin-bottom:10px;
   }
 
   .letter-title{
-    margin:0 0 7px;
+    margin:0 0 8px;
     font-family:'Noto Serif SC',serif;
     font-weight:700;
-    font-size:clamp(1.15rem, 5vw, 1.55rem);
+    font-size:clamp(1.3rem, 5.5vw, 1.6rem);
     letter-spacing:.06em;
-    line-height:1.5;
+    line-height:1.45;
     color:#0c4a6e;
   }
 
   .letter-subtitle{
     margin:0;
     font-family:'Quicksand','Noto Serif SC',sans-serif;
-    font-size:clamp(10.5px, 2.8vw, 12px);
+    font-size:clamp(11.5px, 3.2vw, 12.5px);
     font-weight:500;
     letter-spacing:.16em;
     color:#0ea5e9;
@@ -639,11 +641,11 @@
   .letter-content::-webkit-scrollbar-thumb:hover{ background:#38bdf8; }
 
   .letter-content > p{
-    margin:0 0 1em;
+    margin:0 0 1.05em;
     font-family:'Noto Serif SC',serif;
-    font-size:clamp(13px, 3.4vw, 15px);
+    font-size:clamp(15px, 4.2vw, 16px);
     font-weight:400;
-    line-height:2;
+    line-height:2.1;
     letter-spacing:.02em;
     color:#334155;
   }
@@ -652,7 +654,7 @@
 
   .letter-content > p.letter-salutation{
     font-weight:700;
-    font-size:clamp(15px, 4vw, 17px);
+    font-size:clamp(16px, 4.6vw, 18px);
     color:#075985;
     margin-bottom:.8em;
     text-indent:0;
@@ -666,30 +668,30 @@
   /* 信件列表 */
   .letter-list{
     list-style:none;
-    margin:1em 0 1.25em;
+    margin:1.1em 0 1.3em;
     padding:4px 0 4px 14px;
     border-left:2px solid rgba(186, 230, 253, 0.95);
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:10px;
   }
 
   .letter-list li{
     display:flex;
     align-items:flex-start;
-    gap:8px;
+    gap:9px;
     font-family:'Quicksand','Noto Serif SC',sans-serif;
-    font-size:clamp(11.5px, 3vw, 12.5px);
+    font-size:clamp(14px, 3.9vw, 15px);
     font-weight:500;
-    line-height:1.8;
+    line-height:1.75;
     color:#0c4a6e;
   }
 
   .letter-list li i{
     flex:none;
     color:#38bdf8;
-    font-size:.7em;
-    margin-top:.6em;
+    font-size:.72em;
+    margin-top:.62em;
   }
 
   /* 签名区 */
@@ -700,9 +702,9 @@
   }
 
   .letter-sign .hand{
-    margin:0 0 5px;
+    margin:0 0 6px;
     font-family:'Ma Shan Zheng',cursive;
-    font-size:clamp(1.2rem, 5vw, 1.7rem);
+    font-size:clamp(1.3rem, 5.8vw, 1.8rem);
     line-height:1.5;
     color:#0369a1;
   }
@@ -710,7 +712,7 @@
   .letter-sign .date{
     margin:0;
     font-family:'Quicksand',sans-serif;
-    font-size:clamp(10.5px, 2.8vw, 12px);
+    font-size:clamp(11.5px, 3.2vw, 12.5px);
     font-weight:400;
     letter-spacing:.14em;
     color:#7dd3fc;
@@ -727,7 +729,7 @@
     justify-content:space-between;
     gap:10px;
     font-family:'Quicksand',sans-serif;
-    font-size:clamp(10px, 2.6vw, 11px);
+    font-size:clamp(11px, 3vw, 11.5px);
     font-weight:500;
     letter-spacing:.1em;
     color:#7dd3fc;
@@ -737,6 +739,118 @@
     color:#fb7185;
     margin-right:5px;
     font-size:.9em;
+  }
+
+  /* =========================================================
+     移动端专项优化（信件尺寸 & 布局）
+     ========================================================= */
+  @media (max-width: 640px){
+    .letter-card{
+      padding:
+        58px
+        18px
+        14px;
+      border-radius:22px;
+      max-height:calc(100svh - 108px);
+    }
+
+    .letter-header{
+      padding-bottom:14px;
+      margin-bottom:14px;
+    }
+
+    .letter-quote{
+      font-size:22px;
+      margin-bottom:8px;
+    }
+
+    .letter-title{
+      font-size:1.32rem;
+      line-height:1.42;
+      margin-bottom:7px;
+    }
+
+    .letter-subtitle{
+      font-size:11.5px;
+      letter-spacing:.13em;
+    }
+
+    /* 让内容区充分利用卡片剩余高度，由父级 max-height 约束 */
+    .letter-content{
+      max-height:none;
+      padding-right:4px;
+    }
+
+    .letter-content > p{
+      font-size:15.5px;
+      line-height:2.15;
+      margin-bottom:1.1em;
+      letter-spacing:.03em;
+    }
+
+    .letter-content > p.indent{
+      text-indent:1.7em;
+    }
+
+    .letter-content > p.letter-salutation{
+      font-size:17px;
+      margin-bottom:.85em;
+    }
+
+    .letter-list{
+      margin:1.2em 0 1.4em;
+      padding-left:12px;
+      gap:11px;
+    }
+
+    .letter-list li{
+      font-size:14.5px;
+      line-height:1.8;
+      gap:8px;
+    }
+
+    .letter-sign{
+      margin-top:1.6em;
+      padding-top:1.1em;
+    }
+
+    .letter-sign .hand{
+      font-size:1.45rem;
+      line-height:1.5;
+    }
+
+    .letter-sign .date{
+      font-size:11.5px;
+    }
+
+    .letter-footer{
+      font-size:11px;
+      padding-top:12px;
+      margin-top:12px;
+    }
+
+    .back-link{
+      top:10px;
+      left:8px;
+      padding:9px 14px 9px 6px;
+      font-size:13px;
+    }
+  }
+
+  @media (max-width: 380px){
+    .letter-card{
+      padding: 56px 16px 12px;
+    }
+    .letter-content > p{
+      font-size:15px;
+      line-height:2.1;
+    }
+    .letter-list li{
+      font-size:14px;
+    }
+    .letter-title{
+      font-size:1.24rem;
+    }
   }
 
   /* ============ 无障碍 & 降级 ============ */
@@ -758,19 +872,10 @@
     .badge{ width:86px; height:86px; }
     .badge .num{ font-size:2.2rem; }
     .badge .sup{ font-size:.62rem; margin-top:.3em; }
-    .cta{ padding:14px 26px; font-size:.88rem; }
+    .cta{ padding:14px 26px; font-size:.9rem; }
 
     .music-btn{ width:42px; height:42px; }
     .music-btn .disc{ width:21px; height:21px; }
-
-    .letter-card{
-      padding-left:18px;
-      padding-right:18px;
-      border-radius:22px;
-      max-height:min(720px, calc(100svh - 80px));
-    }
-    .letter-content{ max-height:min(58vh, 460px); }
-    .back-link{ font-size:.68rem; top:14px; left:16px; }
   }
 </style>
 </head>
@@ -1265,7 +1370,6 @@ function buildAmbientWav(){
       audio.src = url;
       audio.load();
 
-      /* 默认自动播放（受浏览器策略影响可能失败，失败时首次交互自动恢复） */
       tryPlay();
     }).catch(function(err){
       console.warn('音频合成失败：', err);
@@ -1286,7 +1390,6 @@ function buildAmbientWav(){
   document.addEventListener('pointerdown', onFirstInteraction);
   document.addEventListener('keydown', onFirstInteraction);
 
-  /* 供视图切换时调用 */
   window.__ensureMusic = tryPlay;
 
   syncPlayState();
