@@ -6,13 +6,9 @@
 <meta name="theme-color" content="#e6f3ff">
 <title>Happy 20th Birthday · 致最好的朋友</title>
 
-<!-- Tailwind（仅作基础 reset 与工具类支持） -->
 <script src="https://cdn.tailwindcss.com"></script>
-
-<!-- FontAwesome 图标 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<!-- 字体 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,400&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -134,7 +130,6 @@
     100% { transform:translate3d(5vw, 3vh, 0) scale(1.05); }
   }
 
-  /* 柔光扫过层 */
   body::after{
     content:'';
     position:fixed;
@@ -240,7 +235,7 @@
     50%{ transform:translateY(-9px); }
   }
 
-  /* ============ 20 岁徽章（已修正居中） ============ */
+  /* ============ 20 岁徽章 ============ */
   .badge-wrap{
     position:relative;
     width:120px; height:120px;
@@ -445,138 +440,90 @@
   .cta:hover .cta-icon{ transform:translateX(3px) rotate(-6deg); }
 
   /* =========================================================
-     音乐播放器（可拖动进度条 + 播放/暂停）
+     音乐播放器（圆形按钮 · 点击播放/暂停 · 默认自动播放）
      ========================================================= */
-  .music-panel{
+  .music-btn{
     position:fixed;
-    top:max(14px, env(safe-area-inset-top));
-    right:max(14px, env(safe-area-inset-right));
+    top:max(16px, env(safe-area-inset-top));
+    right:max(16px, env(safe-area-inset-right));
     z-index:60;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    width:216px;
-    max-width:calc(100vw - 28px);
-    padding:7px 12px 7px 7px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.9);
+    width:46px; height:46px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.92);
+    display:grid;
+    place-items:center;
     background:rgba(255,255,255,.62);
     backdrop-filter:blur(18px) saturate(160%);
     -webkit-backdrop-filter:blur(18px) saturate(160%);
-    box-shadow:
-      0 14px 30px -14px rgba(45,100,160,.65),
-      inset 0 1px 0 rgba(255,255,255,.95);
-    transition:transform .3s cubic-bezier(.22,1,.36,1), background .3s, box-shadow .3s;
-  }
-
-  .music-panel:hover{
-    background:rgba(255,255,255,.8);
-    box-shadow:
-      0 18px 36px -14px rgba(45,100,160,.75),
-      inset 0 1px 0 rgba(255,255,255,1);
-  }
-
-  .mp-btn{
-    flex:none;
-    width:32px; height:32px;
-    border-radius:50%;
-    border:none;
-    display:grid;
-    place-items:center;
-    background:linear-gradient(135deg,#a3d3f5 0%, #5e9ed7 55%, #3d7cb6 100%);
-    color:#ffffff;
+    color:#3d7cb6;
     cursor:pointer;
     box-shadow:
-      0 6px 14px -6px rgba(45,110,175,.9),
-      inset 0 1px 0 rgba(255,255,255,.55);
-    transition:transform .25s cubic-bezier(.22,1,.36,1), filter .25s;
+      0 14px 30px -14px rgba(45,100,160,.7),
+      0 4px 12px -8px rgba(45,100,160,.45),
+      inset 0 1px 0 rgba(255,255,255,.95);
+    transition:
+      transform .3s cubic-bezier(.22,1,.36,1),
+      background .3s ease,
+      box-shadow .3s ease,
+      color .3s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  .mp-btn:hover{ transform:scale(1.07); filter:brightness(1.06); }
-  .mp-btn:active{ transform:scale(.94); }
-  .mp-btn:focus-visible{ outline:2px solid #6ba8dc; outline-offset:3px; }
 
-  .mp-btn.is-loading{ opacity:.55; cursor:progress; }
-  .mp-btn:disabled{ opacity:.45; cursor:not-allowed; }
+  .music-btn:hover{
+    transform:translateY(-2px) scale(1.05);
+    background:rgba(255,255,255,.82);
+    color:#1e5b8c;
+    box-shadow:
+      0 18px 34px -14px rgba(45,100,160,.85),
+      0 6px 14px -8px rgba(45,100,160,.55),
+      inset 0 1px 0 rgba(255,255,255,1);
+  }
+  .music-btn:active{ transform:translateY(0) scale(.95); }
+  .music-btn:focus-visible{ outline:2px solid #6ba8dc; outline-offset:4px; }
 
-  .mp-btn svg{
-    width:14px; height:14px;
+  .music-btn .disc{
+    width:23px; height:23px;
     display:block;
+    transition:opacity .3s ease;
   }
 
-  .mp-btn .ic-pause{ display:none; }
-  .mp-btn.is-playing .ic-play{ display:none; }
-  .mp-btn.is-playing .ic-pause{ display:block; }
-
-  /* 进度条 */
-  .mp-seek{
-    -webkit-appearance:none;
-    appearance:none;
-    flex:1;
-    min-width:0;
-    height:4px;
-    margin:0;
-    padding:0;
-    border:none;
-    border-radius:99px;
-    outline:none;
-    cursor:pointer;
-    background:linear-gradient(to right,
-      #5e9ed7 0%,
-      #6fb0e0 var(--p, 0%),
-      rgba(150,190,225,.32) var(--p, 0%),
-      rgba(150,190,225,.32) 100%);
-    transition:background .15s linear;
+  .music-btn.is-playing .disc{
+    animation:spin 4.5s linear infinite;
   }
 
-  .mp-seek::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:11px; height:11px;
+  /* 未播放时的轻微静音视觉提示 */
+  .music-btn:not(.is-playing) .disc{
+    opacity:.62;
+  }
+
+  /* 呼吸光晕：播放中可见 */
+  .music-btn::before{
+    content:'';
+    position:absolute;
+    inset:-3px;
     border-radius:50%;
-    background:#ffffff;
-    border:2px solid #5e9ed7;
-    box-shadow:0 2px 6px rgba(45,110,175,.45);
-    cursor:pointer;
-    transition:transform .2s ease, box-shadow .2s ease;
+    border:1px solid rgba(150,205,245,.0);
+    pointer-events:none;
+    transition:border-color .4s ease;
   }
-  .mp-seek::-webkit-slider-thumb:hover{
-    transform:scale(1.18);
-    box-shadow:0 2px 10px rgba(45,110,175,.6);
+  .music-btn.is-playing::before{
+    border-color:rgba(150,205,245,.55);
+    animation:musicHalo 2.6s ease-out infinite;
   }
 
-  .mp-seek::-moz-range-thumb{
-    width:9px; height:9px;
-    border-radius:50%;
-    background:#ffffff;
-    border:2px solid #5e9ed7;
-    box-shadow:0 2px 6px rgba(45,110,175,.45);
-    cursor:pointer;
-    transition:transform .2s ease;
-  }
-  .mp-seek::-moz-range-thumb:hover{ transform:scale(1.18); }
-
-  .mp-seek::-moz-range-track{
-    height:4px;
-    border-radius:99px;
-    background:transparent;
+  @keyframes musicHalo{
+    0%{ transform:scale(1); opacity:.75; }
+    70%{ transform:scale(1.32); opacity:0; }
+    100%{ transform:scale(1.32); opacity:0; }
   }
 
-  .mp-seek:focus-visible{
-    outline:2px solid #6ba8dc;
-    outline-offset:5px;
+  .music-btn.is-loading{
+    opacity:.6;
+    cursor:progress;
   }
-
-  .mp-time{
-    flex:none;
-    min-width:30px;
-    text-align:right;
-    font-family:'Quicksand',sans-serif;
-    font-size:.6rem;
-    font-weight:600;
-    letter-spacing:.04em;
-    color:#6d9bc4;
-    font-variant-numeric:tabular-nums;
+  .music-btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
   }
 
   /* =========================================================
@@ -587,218 +534,209 @@
     width:100%;
     display:flex;
     flex-direction:column;
-    border-radius:28px;
+    border-radius:24px;
     padding:
-      clamp(56px, 11vw, 68px)
-      clamp(20px, 5.2vw, 46px)
-      clamp(16px, 3.6vw, 24px);
-    max-height:min(760px, calc(100svh - 140px));
-    background:
-      radial-gradient(circle at 12% 0%, rgba(214,238,255,.85), rgba(214,238,255,0) 55%),
-      radial-gradient(circle at 100% 100%, rgba(220,240,255,.8), rgba(220,240,255,0) 55%),
-      linear-gradient(160deg, rgba(255,255,255,.97) 0%, rgba(250,253,255,.94) 45%, rgba(240,249,255,.95) 100%);
-    border:1px solid rgba(255,255,255,.95);
-    backdrop-filter:blur(22px) saturate(150%);
-    -webkit-backdrop-filter:blur(22px) saturate(150%);
+      clamp(52px, 11vw, 66px)
+      clamp(22px, 5.4vw, 44px)
+      clamp(18px, 4vw, 26px);
+    max-height:min(760px, calc(100svh - 88px));
+    background:rgba(255, 255, 255, 0.92);
+    backdrop-filter:blur(16px) saturate(150%);
+    -webkit-backdrop-filter:blur(16px) saturate(150%);
+    border:1px solid rgba(186, 230, 253, 0.5);
     box-shadow:
-      0 34px 80px -30px rgba(28,78,132,.5),
-      0 10px 30px -18px rgba(28,78,132,.35),
-      inset 0 1px 0 rgba(255,255,255,1);
-    overflow:hidden;
+      0 25px 50px -12px rgba(2, 132, 199, 0.15),
+      0 10px 30px -18px rgba(2, 132, 199, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
-  /* 返回按钮（卡片内绝对定位） */
-  .back-btn{
+  /* 返回按钮 */
+  .back-link{
     position:absolute;
-    top:clamp(14px, 3.4vw, 20px);
-    left:clamp(14px, 3.4vw, 20px);
+    top:clamp(14px, 3.4vw, 22px);
+    left:clamp(14px, 3.4vw, 22px);
     z-index:5;
     display:inline-flex;
     align-items:center;
     gap:6px;
-    padding:7px 15px 7px 11px;
-    border-radius:999px;
-    border:1px solid rgba(186,230,253,.9);
-    background:rgba(255,255,255,.72);
-    backdrop-filter:blur(10px) saturate(150%);
-    -webkit-backdrop-filter:blur(10px) saturate(150%);
-    color:#3d7cb6;
-    font-family:'Quicksand',sans-serif;
-    font-size:.74rem;
+    padding:4px 2px;
+    background:none;
+    border:none;
+    color:#0284c7;
+    font-family:'Quicksand','Noto Serif SC',sans-serif;
+    font-size:clamp(11px, 2.8vw, 12px);
     font-weight:600;
-    letter-spacing:.08em;
+    letter-spacing:.04em;
     cursor:pointer;
-    box-shadow:
-      0 8px 18px -10px rgba(45,100,160,.55),
-      inset 0 1px 0 rgba(255,255,255,.95);
-    transition:transform .3s cubic-bezier(.22,1,.36,1), background .3s, color .3s, box-shadow .3s;
+    transition:color .25s ease, transform .25s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  .back-btn i{ font-size:.72rem; transition:transform .3s ease; }
-  .back-btn:hover{
-    transform:translateX(-2px);
-    background:rgba(255,255,255,.95);
-    color:#1e5b8c;
-    box-shadow:0 12px 22px -10px rgba(45,100,160,.65), inset 0 1px 0 rgba(255,255,255,1);
+  .back-link i{ font-size:.85em; transition:transform .25s ease; }
+  .back-link:hover{ color:#0c4a6e; }
+  .back-link:hover i{ transform:translateX(-2px); }
+  .back-link:focus-visible{
+    outline:2px solid #7dd3fc;
+    outline-offset:3px;
+    border-radius:4px;
   }
-  .back-btn:hover i{ transform:translateX(-2px); }
-  .back-btn:active{ transform:translateX(0) scale(.97); }
-  .back-btn:focus-visible{ outline:2px solid #6ba8dc; outline-offset:3px; }
 
   /* 信件头部 */
-  .letter-head{
+  .letter-header{
     flex:none;
     text-align:center;
-    padding-bottom:clamp(14px, 3.4vw, 20px);
-    margin-bottom:clamp(14px, 3.2vw, 20px);
-    border-bottom:1px solid rgba(186,230,253,.65);
+    padding-bottom:clamp(16px, 3.4vw, 22px);
+    margin-bottom:clamp(16px, 3.4vw, 22px);
+    border-bottom:1px solid rgba(186, 230, 253, 0.6);
   }
 
-  .letter-head .quote{
-    display:block;
-    color:#a9d4f7;
-    font-size:1.7rem;
+  .letter-quote{
+    color:#7dd3fc;
+    font-size:clamp(20px, 5vw, 26px);
     line-height:1;
     margin-bottom:10px;
   }
 
-  .letter-head h2{
+  .letter-title{
     margin:0 0 7px;
     font-family:'Noto Serif SC',serif;
     font-weight:700;
-    font-size:clamp(1.18rem, 5vw, 1.6rem);
+    font-size:clamp(1.15rem, 5vw, 1.55rem);
     letter-spacing:.06em;
     line-height:1.5;
-    color:#22496f;
+    color:#0c4a6e;
   }
 
-  .letter-head p{
+  .letter-subtitle{
     margin:0;
     font-family:'Quicksand','Noto Serif SC',sans-serif;
-    font-size:.7rem;
+    font-size:clamp(10.5px, 2.8vw, 12px);
     font-weight:500;
-    letter-spacing:.18em;
-    color:#8fb8d9;
+    letter-spacing:.16em;
+    color:#0ea5e9;
   }
 
   /* 信件正文滚动区 */
-  .letter-body{
+  .letter-content{
     flex:1 1 auto;
     min-height:0;
+    max-height:min(60vh, 540px);
     overflow-y:auto;
     overscroll-behavior:contain;
     -webkit-overflow-scrolling:touch;
     padding-right:8px;
     scrollbar-width:thin;
-    scrollbar-color:rgba(125,211,252,.9) transparent;
+    scrollbar-color:#7dd3fc transparent;
   }
-  .letter-body::-webkit-scrollbar{ width:6px; }
-  .letter-body::-webkit-scrollbar-track{
-    background:rgba(224,242,254,.55);
+  .letter-content::-webkit-scrollbar{ width:6px; }
+  .letter-content::-webkit-scrollbar-track{
+    background:rgba(224, 242, 254, 0.5);
     border-radius:10px;
   }
-  .letter-body::-webkit-scrollbar-thumb{
+  .letter-content::-webkit-scrollbar-thumb{
     background:#7dd3fc;
     border-radius:10px;
   }
-  .letter-body::-webkit-scrollbar-thumb:hover{ background:#38bdf8; }
+  .letter-content::-webkit-scrollbar-thumb:hover{ background:#38bdf8; }
 
-  .letter-body p{
-    margin:0 0 1.05em;
+  .letter-content > p{
+    margin:0 0 1em;
     font-family:'Noto Serif SC',serif;
-    font-size:clamp(14px, 3.6vw, 15.5px);
+    font-size:clamp(13px, 3.4vw, 15px);
     font-weight:400;
-    line-height:2.05;
+    line-height:2;
     letter-spacing:.02em;
-    color:#31547a;
+    color:#334155;
   }
 
-  .letter-body p.indent{ text-indent:2em; }
+  .letter-content > p.indent{ text-indent:2em; }
 
-  .letter-body p.salutation{
+  .letter-content > p.letter-salutation{
     font-weight:700;
     font-size:clamp(15px, 4vw, 17px);
-    color:#1f4a70;
-    margin-bottom:.75em;
+    color:#075985;
+    margin-bottom:.8em;
     text-indent:0;
   }
 
-  .letter-body p.strong{
+  .letter-content > p.strong{
     font-weight:600;
-    color:#1f4a70;
+    color:#075985;
   }
 
   /* 信件列表 */
   .letter-list{
     list-style:none;
     margin:1em 0 1.25em;
-    padding:6px 0 6px 15px;
-    border-left:2px solid rgba(186,230,253,.95);
+    padding:4px 0 4px 14px;
+    border-left:2px solid rgba(186, 230, 253, 0.95);
     display:flex;
     flex-direction:column;
-    gap:9px;
+    gap:8px;
   }
 
   .letter-list li{
     display:flex;
     align-items:flex-start;
-    gap:9px;
+    gap:8px;
     font-family:'Quicksand','Noto Serif SC',sans-serif;
-    font-size:clamp(12.5px, 3.3vw, 13.5px);
+    font-size:clamp(11.5px, 3vw, 12.5px);
     font-weight:500;
     line-height:1.8;
-    color:#2b5d8b;
+    color:#0c4a6e;
   }
 
   .letter-list li i{
     flex:none;
-    color:#7fb8e6;
-    font-size:.66rem;
-    margin-top:.55em;
+    color:#38bdf8;
+    font-size:.7em;
+    margin-top:.6em;
   }
 
-  /* 签名 */
+  /* 签名区 */
   .letter-sign{
-    margin-top:1.7em;
+    margin-top:1.6em;
+    padding-top:1.2em;
     text-align:right;
   }
 
   .letter-sign .hand{
     margin:0 0 5px;
     font-family:'Ma Shan Zheng',cursive;
-    font-size:clamp(1.35rem, 5.6vw, 1.85rem);
-    line-height:1.45;
-    color:#2b6da3;
+    font-size:clamp(1.2rem, 5vw, 1.7rem);
+    line-height:1.5;
+    color:#0369a1;
   }
 
   .letter-sign .date{
     margin:0;
     font-family:'Quicksand',sans-serif;
-    font-size:.7rem;
-    letter-spacing:.16em;
-    color:#93b9d8;
+    font-size:clamp(10.5px, 2.8vw, 12px);
+    font-weight:400;
+    letter-spacing:.14em;
+    color:#7dd3fc;
   }
 
   /* 信件页脚 */
-  .letter-foot{
+  .letter-footer{
     flex:none;
-    margin-top:clamp(12px, 3vw, 18px);
+    margin-top:clamp(12px, 3vw, 16px);
     padding-top:clamp(12px, 3vw, 16px);
-    border-top:1px solid rgba(186,230,253,.65);
+    border-top:1px solid rgba(186, 230, 253, 0.5);
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:10px;
     font-family:'Quicksand',sans-serif;
-    font-size:.68rem;
+    font-size:clamp(10px, 2.6vw, 11px);
     font-weight:500;
-    letter-spacing:.14em;
-    color:#a3c4de;
+    letter-spacing:.1em;
+    color:#7dd3fc;
   }
-  .letter-foot .fa-heart{
-    color:#f28ba8;
+
+  .letter-footer .fa-heart{
+    color:#fb7185;
     margin-right:5px;
-    font-size:.7rem;
+    font-size:.9em;
   }
 
   /* ============ 无障碍 & 降级 ============ */
@@ -807,7 +745,9 @@
     .badge-ring,
     .cta-ring,
     .blob,
-    body::after{
+    body::after,
+    .music-btn.is-playing .disc,
+    .music-btn.is-playing::before{
       animation:none !important;
     }
     .screen{ transition-duration:.01ms; }
@@ -819,16 +759,18 @@
     .badge .num{ font-size:2.2rem; }
     .badge .sup{ font-size:.62rem; margin-top:.3em; }
     .cta{ padding:14px 26px; font-size:.88rem; }
-    .music-panel{ width:190px; gap:8px; padding:6px 10px 6px 6px; }
-    .mp-btn{ width:29px; height:29px; }
-    .mp-btn svg{ width:13px; height:13px; }
-    .mp-time{ min-width:27px; font-size:.56rem; }
+
+    .music-btn{ width:42px; height:42px; }
+    .music-btn .disc{ width:21px; height:21px; }
+
     .letter-card{
       padding-left:18px;
       padding-right:18px;
-      border-radius:24px;
+      border-radius:22px;
+      max-height:min(720px, calc(100svh - 80px));
     }
-    .back-btn{ font-size:.7rem; padding:6px 13px 6px 10px; }
+    .letter-content{ max-height:min(58vh, 460px); }
+    .back-link{ font-size:.68rem; top:14px; left:16px; }
   }
 </style>
 </head>
@@ -846,27 +788,20 @@
   <!-- 背景粒子 -->
   <canvas id="bg" aria-hidden="true"></canvas>
 
-  <!-- 背景音乐播放器 -->
-  <div class="music-panel" id="musicPanel" role="group" aria-label="背景音乐播放器">
-    <button class="mp-btn" id="mpPlay" type="button" aria-label="播放背景音乐" aria-pressed="false">
-      <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M8.5 5.2v13.6l10.4-6.8z"/>
-      </svg>
-      <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <rect x="7.2" y="5.4" width="3.2" height="13.2" rx="1.3"/>
-        <rect x="13.6" y="5.4" width="3.2" height="13.2" rx="1.3"/>
-      </svg>
-    </button>
-    <input type="range" class="mp-seek" id="mpSeek" min="0" max="1000" value="0" step="1" aria-label="播放进度">
-    <span class="mp-time" id="mpTime">0:00</span>
-  </div>
+  <!-- 背景音乐控制（圆形按钮 · 点击播放/暂停） -->
+  <button class="music-btn" id="mpPlay" type="button" aria-label="暂停背景音乐" aria-pressed="true" title="背景音乐">
+    <svg class="disc" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10.2" stroke="currentColor" stroke-width="1.3" opacity=".85"/>
+      <circle cx="12" cy="12" r="6.4" stroke="currentColor" stroke-width="1.1" opacity=".5"/>
+      <circle cx="12" cy="12" r="2.3" fill="currentColor" opacity=".92"/>
+    </svg>
+  </button>
 
-  <!-- 音频元素（由 Web Audio 离线合成后注入） -->
   <audio id="bgmAudio" loop preload="auto"></audio>
 
   <main class="stage">
 
-    <!-- ========== 开屏欢迎页（保留原版） ========== -->
+    <!-- ========== 开屏欢迎页 ========== -->
     <section id="welcome" class="screen" aria-label="欢迎页">
       <div class="glass-card welcome-card">
 
@@ -910,20 +845,22 @@
 
       <div class="letter-card">
 
-        <button id="backBtn" class="back-btn" type="button">
+        <button id="backBtn" class="back-link" type="button">
           <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
           返回封面
         </button>
 
-        <header class="letter-head">
-          <i class="fa-solid fa-quote-left quote" aria-hidden="true"></i>
-          <h2>致你：20岁的闪耀诗篇</h2>
-          <p>写在盛放的二十岁 · 特别纪念</p>
-        </header>
+        <div class="letter-header">
+          <div class="letter-quote">
+            <i class="fa-solid fa-quote-left" aria-hidden="true"></i>
+          </div>
+          <h2 class="letter-title">致你：20岁的闪耀诗篇</h2>
+          <p class="letter-subtitle">写在盛放的二十岁 · 特别纪念</p>
+        </div>
 
-        <div class="letter-body" id="paperScroll">
+        <div class="letter-content" id="paperScroll">
 
-          <p class="salutation">亲爱的朋友：</p>
+          <p class="letter-salutation">亲爱的朋友：</p>
 
           <p class="indent">
             生日快乐！当你打开这封信的时候，你已经正式跨入了“20岁”这个闪闪发光的大门。祝贺你，迈入了人生中最充满无限可能、最自由奔放的全新阶段！
@@ -967,10 +904,10 @@
 
         </div>
 
-        <footer class="letter-foot">
+        <div class="letter-footer">
           <span><i class="fa-solid fa-heart" aria-hidden="true"></i>Friendship Forever</span>
           <span>20th Special Edition</span>
-        </footer>
+        </div>
 
       </div>
     </section>
@@ -993,7 +930,6 @@
   let particles = [];
   let rafId = null;
 
-  /* 预渲染发光贴图 */
   const SPRITE_SIZE = 64;
   const sprite = document.createElement('canvas');
   sprite.width = sprite.height = SPRITE_SIZE;
@@ -1182,14 +1118,14 @@ function buildAmbientWav(){
   const STEPS_PER_BAR = 8;
 
   const CHORDS = [
-    [60, 64, 67, 71],   // Cmaj7
-    [57, 60, 64, 67],   // Am7
-    [53, 57, 60, 64],   // Fmaj7
-    [55, 59, 62, 65],   // G7
-    [52, 55, 59, 62],   // Em7
-    [57, 60, 64, 67],   // Am7
-    [50, 53, 57, 60],   // Dm7
-    [55, 59, 62, 65]    // G7
+    [60, 64, 67, 71],
+    [57, 60, 64, 67],
+    [53, 57, 60, 64],
+    [55, 59, 62, 65],
+    [52, 55, 59, 62],
+    [57, 60, 64, 67],
+    [50, 53, 57, 60],
+    [55, 59, 62, 65]
   ];
 
   const TOTAL_STEPS = CHORDS.length * STEPS_PER_BAR;
@@ -1265,50 +1201,37 @@ function buildAmbientWav(){
 
 
 /* =========================================================
-   3. 音乐播放器（可拖动进度条 + 播放/暂停）
+   3. 音乐播放器（圆形按钮 · 点击播放/暂停 · 默认自动播放）
    ========================================================= */
 (function initPlayer(){
-  const audio   = document.getElementById('bgmAudio');
-  const btn     = document.getElementById('mpPlay');
-  const seek    = document.getElementById('mpSeek');
-  const timeEl  = document.getElementById('mpTime');
+  const audio = document.getElementById('bgmAudio');
+  const btn   = document.getElementById('mpPlay');
 
   let ready = false;
   let userPaused = false;
-  let seeking = false;
-
-  function fmt(t){
-    if(!isFinite(t) || t < 0) t = 0;
-    const m = Math.floor(t / 60);
-    const s = Math.floor(t % 60);
-    return m + ':' + String(s).padStart(2, '0');
-  }
-
-  function setProgressUI(){
-    const d = audio.duration || 0;
-    const t = audio.currentTime || 0;
-    const pct = d ? Math.min(100, (t / d) * 100) : 0;
-
-    if(!seeking){
-      seek.value = Math.round(pct * 10);
-      seek.style.setProperty('--p', pct + '%');
-    }
-    timeEl.textContent = fmt(t);
-  }
 
   function syncPlayState(){
     const playing = !audio.paused && !audio.ended;
     btn.classList.toggle('is-playing', playing);
     btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
     btn.setAttribute('aria-label', playing ? '暂停背景音乐' : '播放背景音乐');
+    btn.title = playing ? '暂停背景音乐' : '播放背景音乐';
   }
 
-  /* ---- 播放 / 暂停 ---- */
+  function tryPlay(){
+    if(!ready || userPaused) return;
+    const p = audio.play();
+    if(p && typeof p.catch === 'function') p.catch(function(){});
+  }
+
+  /* 点击切换播放 / 暂停 */
   btn.addEventListener('click', function(){
     if(!ready) return;
 
     if(audio.paused){
-      audio.play().then(function(){ userPaused = false; }).catch(function(){});
+      audio.play().then(function(){
+        userPaused = false;
+      }).catch(function(){});
     }else{
       audio.pause();
       userPaused = true;
@@ -1317,44 +1240,17 @@ function buildAmbientWav(){
 
   audio.addEventListener('play', syncPlayState);
   audio.addEventListener('pause', syncPlayState);
-  audio.addEventListener('timeupdate', setProgressUI);
+  audio.addEventListener('ended', syncPlayState);
 
   audio.addEventListener('loadedmetadata', function(){
     ready = true;
-    setProgressUI();
+    syncPlayState();
   });
-
   audio.addEventListener('canplay', function(){
     ready = true;
   });
 
-  /* ---- 进度条拖动 ---- */
-  seek.addEventListener('input', function(){
-    seeking = true;
-    const pct = Number(seek.value) / 10;
-    seek.style.setProperty('--p', pct + '%');
-
-    const d = audio.duration || 0;
-    timeEl.textContent = fmt(pct / 100 * d);
-  });
-
-  seek.addEventListener('change', function(){
-    if(!ready){
-      seeking = false;
-      return;
-    }
-    const d = audio.duration || 0;
-    const pct = Number(seek.value) / 10;
-
-    try{
-      audio.currentTime = (pct / 100) * d;
-    }catch(e){ /* ignore */ }
-
-    seeking = false;
-    setProgressUI();
-  });
-
-  /* ---- 离线合成音频并注入 ---- */
+  /* 初始化：合成音频并尝试自动播放 */
   btn.classList.add('is-loading');
 
   setTimeout(function(){
@@ -1369,34 +1265,29 @@ function buildAmbientWav(){
       audio.src = url;
       audio.load();
 
-      /* 尝试自动播放（可能被拦截，没关系） */
-      const p = audio.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
+      /* 默认自动播放（受浏览器策略影响可能失败，失败时首次交互自动恢复） */
+      tryPlay();
     }).catch(function(err){
       console.warn('音频合成失败：', err);
       btn.disabled = true;
       btn.title = '音频不可用';
+      syncPlayState();
     }).finally(function(){
       btn.classList.remove('is-loading');
     });
   }, 120);
 
-  /* ---- 首次用户交互时尝试恢复播放 ---- */
-  document.addEventListener('pointerdown', function onFirst(){
-    if(ready && audio.paused && !userPaused){
-      const p = audio.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
-    }
-    document.removeEventListener('pointerdown', onFirst);
-  }, { once: true });
+  /* 浏览器拦截自动播放时的兜底：首次用户交互恢复播放 */
+  function onFirstInteraction(){
+    tryPlay();
+    document.removeEventListener('pointerdown', onFirstInteraction);
+    document.removeEventListener('keydown', onFirstInteraction);
+  }
+  document.addEventListener('pointerdown', onFirstInteraction);
+  document.addEventListener('keydown', onFirstInteraction);
 
-  /* 暴露给视图切换逻辑 */
-  window.__ensureMusic = function(){
-    if(ready && audio.paused && !userPaused){
-      const p = audio.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
-    }
-  };
+  /* 供视图切换时调用 */
+  window.__ensureMusic = tryPlay;
 
   syncPlayState();
 })();
@@ -1418,7 +1309,6 @@ function buildAmbientWav(){
     if(current === 'letter') return;
     current = 'letter';
 
-    /* 用户手势：此时激活 / 恢复背景音乐最可靠 */
     if(typeof window.__ensureMusic === 'function') window.__ensureMusic();
 
     welcomeEl.classList.add('is-hidden');
@@ -1442,16 +1332,8 @@ function buildAmbientWav(){
   if(openBtn) openBtn.addEventListener('click', openLetter);
   if(backBtn) backBtn.addEventListener('click', backToWelcome);
 
-  /* 键盘辅助：Esc 返回封面 */
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && current === 'letter') backToWelcome();
-  });
-
-  /* 初次进入：尝试自动播放（多数浏览器会拦截，无妨） */
-  window.addEventListener('load', function(){
-    if(typeof window.__ensureMusic === 'function'){
-      setTimeout(function(){ window.__ensureMusic(); }, 1200);
-    }
   });
 })();
 </script>
